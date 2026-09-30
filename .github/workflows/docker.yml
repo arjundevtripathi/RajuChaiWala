@@ -1,59 +1,47 @@
-name: Build and Deploy
+name: CI/CD
 
 on:
   push:
     branches: [main]
-  workflow_dispatch:
-
-env:
-  IMAGE_NAME: ghcr.io/${{ github.repository }}
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
       - uses: actions/checkout@v4
 
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
+      - uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v6
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: |
-            ${{ env.IMAGE_NAME }}:${{ github.sha }}
-            ${{ env.IMAGE_NAME }}:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/rajuchaiwala:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   deploy:
-    needs: build
+    needs: build-and-push
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1.2.0
+      - uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
+          username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/app
-            git pull origin main || true
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            export IMAGE_NAME=ghcr.io/${{ github.repository }}
-            export IMAGE_TAG=${{ github.sha }}
-            docker pull $IMAGE_NAME:$IMAGE_TAG
-            docker stop raju-app || true
-            docker rm raju-app || true
-            docker run -d --name raju-app \
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/rajuchaiwala:latest
+            docker stop rajuchaiwala || true
+            docker rm rajuchaiwala || true
+            docker run -d --name rajuchaiwala --restart unless-stopped \
               -p 8000:8000 \
-              --env-file .env \
-              --restart unless-stopped \
-              $IMAGE_NAME:$IMAGE_TAG
+              --env-file /home/ubuntu/app/.env \
+              -v /home/ubuntu/app/faiss_index:/app/outputs/faiss_index \
+              -v /home/ubuntu/app/hf_cache:/root/.cache/huggingface \
+              ${{ secrets.DOCKERHUB_USERNAME }}/rajuchaiwala:latest
+            docker image prune -f
