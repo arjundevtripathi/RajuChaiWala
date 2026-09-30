@@ -1,0 +1,483 @@
+/* ============================================================
+   RAJU TEA SHOP — Light Colorful Animated Theme
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800;900&display=swap');
+
+/* ---------- Global ---------- */
+html, body, [class*="css"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.stApp {
+    background: #ffffff;
+    color: #1a1630;
+    overflow-x: hidden;
+}
+
+/* Hide Streamlit chrome */
+#MainMenu, footer, header { visibility: hidden; }
+.block-container {
+    padding-top: 1.5rem;
+    padding-bottom: 6rem;
+    max-width: 1150px;
+}
+
+/* ============================================================
+   ANIMATED BACKGROUND BLOBS
+   ============================================================ */
+.stApp::before {
+    content: "";
+    position: fixed;
+    top: -200px;
+    left: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 138, 76, 0.28), transparent 65%);
+    border-radius: 50%;
+    filter: blur(60px);
+    animation: floatBlob1 18s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.stApp::after {
+    content: "";
+    position: fixed;
+    bottom: -250px;
+    right: -200px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(160, 100, 255, 0.22), transparent 65%);
+    border-radius: 50%;
+    filter: blur(70px);
+    animation: floatBlob2 22s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes floatBlob1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%      { transform: translate(80px, 60px) scale(1.1); }
+}
+
+@keyframes floatBlob2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%      { transform: translate(-90px, -70px) scale(1.15); }
+}
+
+/* Keep content above blobs */
+.block-container, [data-testid="stSidebar"] {
+    position: relative;
+    z-index: 1;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+    position: relative;
+    padding: 2.8rem 2.4rem;
+    border-radius: 28px;
+    background: linear-gradient(135deg, #fff5eb 0%, #f9f0ff 50%, #eef6ff 100%);
+    border: 1px solid rgba(255, 174, 92, 0.25);
+    margin-bottom: 1.8rem;
+    overflow: hidden;
+    animation: heroIn 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow:
+        0 20px 60px -20px rgba(255, 138, 76, 0.35),
+        0 8px 24px -12px rgba(160, 100, 255, 0.25);
+}
+
+@keyframes heroIn {
+    from { opacity: 0; transform: translateY(24px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Floating gradient orbs inside hero */
+.hero::before {
+    content: "";
+    position: absolute;
+    top: -60%;
+    right: -8%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 174, 92, 0.5), transparent 65%);
+    filter: blur(30px);
+    animation: orbPulse 6s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    bottom: -50%;
+    left: -5%;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(160, 100, 255, 0.4), transparent 65%);
+    filter: blur(35px);
+    animation: orbPulse 8s ease-in-out infinite reverse;
+    pointer-events: none;
+}
+
+@keyframes orbPulse {
+    0%, 100% { transform: scale(1); opacity: 0.85; }
+    50%      { transform: scale(1.25); opacity: 1; }
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #b45309;
+    background: rgba(255, 174, 92, 0.18);
+    border: 1px solid rgba(255, 174, 92, 0.4);
+    margin-bottom: 1.1rem;
+    position: relative;
+    z-index: 2;
+    animation: badgeGlow 3s ease-in-out infinite;
+}
+
+@keyframes badgeGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 174, 92, 0.4); }
+    50%      { box-shadow: 0 0 20px 4px rgba(255, 174, 92, 0.25); }
+}
+
+.hero-badge::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ff8a4c;
+    box-shadow: 0 0 12px #ff8a4c;
+    animation: pulseDot 1.8s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(1.4); opacity: 0.6; }
+}
+
+.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.2rem;
+    line-height: 1.05;
+    margin: 0 0 0.7rem 0;
+    background: linear-gradient(90deg, #ff8a4c 0%, #e0529c 40%, #7c5cff 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+    position: relative;
+    z-index: 2;
+    animation: gradientShift 6s ease infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+}
+
+.hero-subtitle {
+    font-size: 1.05rem;
+    color: #5a5370;
+    max-width: 620px;
+    line-height: 1.65;
+    margin: 0;
+    position: relative;
+    z-index: 2;
+}
+
+/* ============================================================
+   METRIC CARDS — color-coded, animated, hover lift
+   ============================================================ */
+.metric-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.1rem;
+    margin: 1.8rem 0;
+}
+
+.metric-card {
+    position: relative;
+    padding: 1.3rem 1.4rem;
+    border-radius: 20px;
+    background: #ffffff;
+    border: 1px solid #ece7f5;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s ease,
+                border-color 0.3s ease;
+    animation: cardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.metric-card:nth-child(1) { animation-delay: 0.05s; }
+.metric-card:nth-child(2) { animation-delay: 0.15s; }
+.metric-card:nth-child(3) { animation-delay: 0.25s; }
+
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.metric-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+    background: linear-gradient(90deg, #ff8a4c, #e0529c, #7c5cff);
+    background-size: 200% 100%;
+    animation: gradientShift 4s linear infinite;
+}
+
+.metric-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow:
+        0 20px 40px -15px rgba(255, 138, 76, 0.35),
+        0 10px 20px -10px rgba(160, 100, 255, 0.28);
+    border-color: rgba(255, 174, 92, 0.5);
+}
+
+.metric-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #8b8399;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.metric-value {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: #1a1630;
+    letter-spacing: -0.02em;
+}
+
+.metric-value.accent {
+    background: linear-gradient(90deg, #ff8a4c, #e0529c, #7c5cff);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 5s ease infinite;
+}
+
+/* ============================================================
+   CHAT BUBBLES — colorful, animated
+   ============================================================ */
+[data-testid="stChatMessage"] {
+    background: #ffffff !important;
+    border: 1px solid #eee9f7 !important;
+    border-radius: 20px !important;
+    padding: 1rem 1.2rem !important;
+    margin-bottom: 0.8rem !important;
+    box-shadow: 0 4px 20px -8px rgba(160, 100, 255, 0.15);
+    animation: msgIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+[data-testid="stChatMessage"]:hover {
+    box-shadow: 0 12px 32px -10px rgba(255, 138, 76, 0.28);
+    transform: translateY(-2px);
+}
+
+@keyframes msgIn {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+[data-testid="stChatMessage"] p {
+    color: #2a2540;
+    line-height: 1.65;
+}
+
+/* User bubble — orange accent */
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
+    background: linear-gradient(135deg, #fff6ee 0%, #fff0f7 100%) !important;
+    border-color: rgba(255, 138, 76, 0.3) !important;
+}
+
+/* Assistant bubble — violet accent */
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
+    background: linear-gradient(135deg, #f5f0ff 0%, #eef6ff 100%) !important;
+    border-color: rgba(124, 92, 255, 0.28) !important;
+}
+
+/* ============================================================
+   CHAT INPUT — glowing animated border
+   ============================================================ */
+[data-testid="stChatInput"] {
+    background: #ffffff !important;
+    border: 2px solid transparent !important;
+    border-radius: 18px !important;
+    background-image:
+        linear-gradient(#ffffff, #ffffff),
+        linear-gradient(90deg, #ff8a4c, #e0529c, #7c5cff, #ff8a4c);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    background-size: 100% 100%, 300% 100%;
+    animation: borderFlow 4s linear infinite;
+    box-shadow: 0 12px 32px -12px rgba(255, 138, 76, 0.35);
+}
+
+@keyframes borderFlow {
+    0%   { background-position: 0 0, 0% 50%; }
+    100% { background-position: 0 0, 300% 50%; }
+}
+
+[data-testid="stChatInput"] textarea {
+    color: #1a1630 !important;
+    font-size: 1rem !important;
+}
+
+[data-testid="stChatInput"] textarea::placeholder {
+    color: #a098b3 !important;
+}
+
+/* ============================================================
+   SIDEBAR — soft gradient, colorful sections
+   ============================================================ */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #ffffff 0%, #faf7ff 100%);
+    border-right: 1px solid #efeaf9;
+}
+
+[data-testid="stSidebar"] .stRadio label,
+[data-testid="stSidebar"] .stMarkdown p {
+    color: #3a3450 !important;
+}
+
+/* ============================================================
+   BUTTONS — colorful hover, lift
+   ============================================================ */
+.stButton > button {
+    width: 100%;
+    background: #ffffff;
+    color: #3a3450;
+    border: 1.5px solid #ece7f5;
+    border-radius: 14px;
+    padding: 0.6rem 1rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.stButton > button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, #ff8a4c, #e0529c, #7c5cff);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    z-index: -1;
+}
+
+.stButton > button:hover {
+    color: #ffffff;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -10px rgba(255, 138, 76, 0.5);
+}
+
+.stButton > button:hover::before {
+    opacity: 1;
+}
+
+/* ============================================================
+   FILE UPLOADER — dashed animated
+   ============================================================ */
+[data-testid="stFileUploader"] {
+    background: linear-gradient(135deg, #fff8f2 0%, #f7f2ff 100%);
+    border: 2px dashed rgba(255, 138, 76, 0.4);
+    border-radius: 18px;
+    padding: 0.8rem;
+    transition: all 0.25s ease;
+}
+
+[data-testid="stFileUploader"]:hover {
+    border-color: #ff8a4c;
+    background: linear-gradient(135deg, #fff3e8 0%, #f3ebff 100%);
+    box-shadow: 0 8px 24px -10px rgba(255, 138, 76, 0.35);
+}
+
+/* ============================================================
+   ALERTS
+   ============================================================ */
+[data-testid="stAlert"] {
+    border-radius: 16px;
+    border: 1px solid #ece7f5;
+    animation: cardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================================
+   EXPANDER
+   ============================================================ */
+.streamlit-expanderHeader {
+    background: #ffffff !important;
+    border-radius: 14px !important;
+    color: #3a3450 !important;
+    border: 1px solid #ece7f5;
+    transition: all 0.2s ease;
+}
+
+.streamlit-expanderHeader:hover {
+    border-color: rgba(255, 138, 76, 0.5);
+    color: #ff8a4c !important;
+}
+
+/* ============================================================
+   DIVIDER
+   ============================================================ */
+hr {
+    border: none !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, transparent, #ece7f5, transparent) !important;
+    margin: 1.6rem 0 !important;
+}
+
+/* ============================================================
+   SCROLLBAR — colorful
+   ============================================================ */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #faf7ff; }
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ff8a4c, #e0529c, #7c5cff);
+    border-radius: 999px;
+    border: 2px solid #faf7ff;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ff7a3c, #d0428c, #6c4cef);
+}
+
+/* ============================================================
+   FLOATING EMOJI PARTICLES (optional decoration)
+   ============================================================ */
+@keyframes floatY {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-14px) rotate(8deg); }
+}
+
+.floating-emoji {
+    position: fixed;
+    font-size: 1.8rem;
+    opacity: 0.35;
+    pointer-events: none;
+    animation: floatY 6s ease-in-out infinite;
+    z-index: 0;
+}
+
+.emoji-1 { top: 12%; left: 4%;  animation-delay: 0s;   }
+.emoji-2 { top: 24%; right: 5%; animation-delay: 1.5s; }
+.emoji-3 { bottom: 18%; left: 6%;  animation-delay: 2.5s; }
+.emoji-4 { bottom: 12%; right: 8%; animation-delay: 0.8s; }

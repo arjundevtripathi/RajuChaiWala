@@ -1,0 +1,22 @@
+services:
+  app:
+    image: ${IMAGE_NAME:-raju-chaiwala}:${IMAGE_TAG:-latest}
+    build: .                          # used only for local builds
+    container_name: raju-app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Keep FAISS index and data outside the image
+      - ./outputs:/app/outputs
+      - ./data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
